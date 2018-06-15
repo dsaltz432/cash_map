@@ -1,0 +1,102 @@
+
+/***********************************************
+			Basic styles
+************************************************/
+body{
+	background-color: #F8F8F8;
+	font-family: arial, helvetica, sans-serif;
+}
+
+#container{
+	background-color: #F8F8F8;
+	margin: 0 auto; /* not what this does */
+	width: 95%;
+	max-width: 1100px;
+}
+
+#wrap{
+	width: 100%;
+	background-color: #0040ff;
+	padding-bottom: 20px
+}
+#header_bar{ margin: -20px 1% 0 3%; }
+
+
+/***********************************************
+			Styling the blue header bar
+************************************************/
+
+#search_bar,#buttons{ display:inline-block;}
+#signup{margin: 5px 0 5px 45px;}
+#login{margin: 0 0 5px 17px;}
+#search{color:black;}
+#search_bar, #yelp, #buttons{ margin-bottom: 15px; }
+#yelp, #yelpA { color:#ffff1a; }
+
+#hello{
+  font-size: 23px;
+  color:#ffff1a;
+}
+
+#search,#go{display: block;}
+#search_bar {
+	width:45%;
+	margin:0 10% 30px 15%;
+	color:white;
+}
+
+
+/***********************************************
+			Styling the list of places
+************************************************/
+
+#review{ margin: 20px 0 20px 2%;}
+#topPlaces{ padding-bottom: 20px;}
+
+#topPlaces ul {
+	list-style-type: none;
+	font-size: 18px;
+	padding: 20px;
+}
+
+#topPlaces ul li a{ display:inline-block; }
+#topPlaces ul li{ display:inline-block; }
+
+.list_username, .list_place{
+	margin: 5px 10px 5px 0px;
+	font-size: 24px;
+}
+.list_rating, .list_cost,.list_time{margin: 5px 25px 5px 0px;}
+.list_comment{margin: 5px 15px 5px 0px;}
+
+div[class^="comment_block"] {
+	background-color: white;
+	margin:25px 25px 25px 0;
+	border-radius: 15px;
+	padding: 30px 15px 30px 0px;
+}
+
+/***********************************************
+			Cool font for Yelp for U of R Logo
+************************************************/
+
+
+#popular{
+	font: 40px 'Courier New';
+	margin-left: 2%;
+	margin-top: 35px;
+}
+
+#yelp{
+	text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
+	font: 45px 'ChunkFiveRegular';
+	padding-top: 10px;
+}
+
+/***********************************************
+	Changing font on buttons
+************************************************/
+.b {
+	font: 35px 'Courier New';
+}
+

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<head>
+<title>Yelp for U of R</title>
+
+<!-- include jQuery, bootstrap, and my css --> 
+<script src="jquery-1.11.3.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="css/MainStyles.css">
+<link rel="stylesheet" type="text/css" href="css/AccountsStyles.css">
+
+<script>
+
+$(document).ready(function() {
+  
+/***********************************************
+      Ajax requests to the server
+************************************************/
+
+  // "Delete All Users" clicked
+  $("#delete").click(function() { // when login button is clicked
+    $.ajax({
+      url: "/delete",
+      type: "POST",
+      dataType: "text", 
+      data: { username: $("#usernameField").val(),
+              password: $("#passwordField").val(),
+             },
+      success: function(data) {
+         $("#passwordField").val("");
+         $("#usernameField").val("");    
+         $("#status").html(data); 
+      },
+    });
+   });
+
+
+  // "Log In" clicked
+  $("#login").click(function() { // when login button is clicked
+    $.ajax({
+      url: "/users/" + $("#usernameField").val(),
+      type: "GET",
+      dataType: "text", 
+      data: {},
+      success: function(data) {
+         $("#status").html(data); 
+      },
+    });
+   });
+
+   // "Create New Account" clicked
+    $("#signup").click(function() { 
+      console.log("here");
+      console.log($("#usernameField").val());      
+      console.log($("#passwordField").val());
+
+    $.ajax({
+      url: "/users",
+      type: "POST", 
+      dataType : "text",
+      data : { username: $("#usernameField").val(),
+               password: $("#passwordField").val(),
+             },
+      success: function(data) {
+          $("#passwordField").val("");
+          $("#usernameField").val("");    
+          $("#status").html(data); 
+       },
+    });
+  });
+});
+
+</script>
+
+</head>
+  <body>
+
+<div id="wrap">
+  <div id="container"> 
+    <h2 id="login_header">Log In</h2>
+  	<div id="username">Username: <input id="usernameField" type="text" size="20"/></div>
+  	<div id="password">Password: <input id="passwordField" type="password" size="20"/></div>
+
+  	<div id="buttons">
+      <button type="button" class="btn btn-primary btn-lg" id="signup">Create New Account</button>
+      <br>
+  		<button type="button" class="btn btn-primary btn-lg" id="login">Log In</button>
+      <br>
+      <button type="button" class="btn btn-primary btn-lg" id="delete">Delete All Users</button>
+
+    </div>
+
+      <!-- outputs status for success or failure -->
+      <div id="status"></div>
+  </div>  <!-- end of container -->
+
+  </body>
+</html>
+ 
