@@ -22,9 +22,7 @@ $(document).ready(function() {
       url: "/delete",
       type: "POST",
       dataType: "text", 
-      data: { username: $("#usernameField").val(),
-              password: $("#passwordField").val(),
-             },
+      data: {},
       success: function(data) {
          $("#passwordField").val("");
          $("#usernameField").val("");    
@@ -37,24 +35,24 @@ $(document).ready(function() {
   // "Log In" clicked
   $("#login").click(function() { // when login button is clicked
     $.ajax({
-      url: "/users/" + $("#usernameField").val(),
+      url: "/login",
       type: "GET",
       dataType: "text", 
-      data: {},
+      data : { username: $("#usernameField").val(),
+               password: $("#passwordField").val(),
+             },
       success: function(data) {
-         $("#status").html(data); 
+          $("#passwordField").val("");
+          $("#usernameField").val("");    
+          $("#status").html(data); 
       },
     });
    });
 
    // "Create New Account" clicked
     $("#signup").click(function() { 
-      console.log("here");
-      console.log($("#usernameField").val());      
-      console.log($("#passwordField").val());
-
     $.ajax({
-      url: "/users",
+      url: "/signup",
       type: "POST", 
       dataType : "text",
       data : { username: $("#usernameField").val(),
