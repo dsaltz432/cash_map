@@ -1,11 +1,15 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var fs = require('fs');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-// app.use(express.static('static_files'));
 app.use(express.static(__dirname + '/public'));
 
+// import my own js files
+var atm_locations = require('./atm_locations');
+var merchants_category = require('./example_merchants_category');
+var authenticate = require('./authenticate');
 
 // importing sqlite and creating the database
 var sqlite3 = require("sqlite3").verbose();
@@ -85,6 +89,29 @@ db.serialize(function() {
 			if (err != null){ res.send("Failed to delete all users"); }
 			else { res.send("All users deleted!"); }
 		});	
+	});
+
+	// Test MasterCard API
+	app.get('/testMasterCardAPI', function (req, res) {
+		console.log("Trying to test MasterCard API...");
+
+		var directory = "../../../../../../Documents/secret_keys/";
+		var file_name = "key_info.txt";
+
+	  	var contents = fs.readFileSync(directory + file_name, 'utf8');
+	  	var arr = contents.split("\n");
+
+	  	// 1st: Consumer Key, 2nd: keyAlias, 3rd: keyPassword
+		var consumerKey = arr[0].split(":")[1];
+		var keyAlias = arr[1].split(":")[1];
+		var keyPassword = arr[2].split(":")[1];
+		var keyStorePath = directory + "cashmap_sandbox_key.p12";
+
+
+		authenticate.auth(consumerKey, keyStorePath, keyAlias, keyPassword);
+		atm_locations.testAPI();
+		merchants_category.testAPI();
+
 	});
 
 });

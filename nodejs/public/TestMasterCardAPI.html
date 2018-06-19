@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+<title>Yelp for U of R</title>
+
+<!-- include jQuery, bootstrap, and my css --> 
+<script src="jquery-1.11.3.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+<script>
+
+$(document).ready(function() {
+  
+/***********************************************
+      Ajax requests to the server
+************************************************/
+
+   // "Create New Account" clicked
+    $("#test_mastercard_api").click(function() { 
+    $.ajax({
+      url: "/testMasterCardAPI",
+      type: "GET", 
+      dataType : "text",
+      data : {},
+      success: function(data) {
+          $("#status").html(data); 
+       },
+    });
+  });
+});
+
+</script>
+
+</head>
+  <body>
+
+<div id="wrap">
+  <div id="container"> 
+  	<div id="buttons">
+      <button type="button" class="btn btn-primary btn-lg" id="test_mastercard_api">Test MasterCard API</button>
+    </div>
+
+      <!-- outputs status for success or failure -->
+      <div id="status"></div>
+  </div>  <!-- end of container -->
+
+  </body>
+</html>
+ 
