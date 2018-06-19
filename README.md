@@ -9,3 +9,8 @@ To run the NodeJS/sqlite example:
        select * from users;  
 -You can add and delete users and check on the users table from the sqlite3 terminal session  
 
+To run the Mastercard Example API: 
+-Install dependencies npm/node, and mastercard SDK (npm install mastercard-places --save) 
+-Add the CashMap-sandbox.p12 file to a local folder
+-Change 'keyStorePath' variable in example_placeById.js to point to .p12 file
+-In terminal, run node example_placeById.js
