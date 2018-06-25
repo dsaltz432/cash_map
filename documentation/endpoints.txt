@@ -1,0 +1,12 @@
+
+Login:
+Call a GET request to: http://ec2-18-217-170-247.us-east-2.compute.amazonaws.com:3000/login
+-With two request body parameters: username, password
+-Should get back a success or error message
+
+Signup:
+Call a POST request to: http://ec2-18-217-170-247.us-east-2.compute.amazonaws.com:3000/signup
+-With two request body parameters: username, password
+-Should get back a success or error message
+
+

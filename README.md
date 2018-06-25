@@ -14,3 +14,8 @@ To run the Mastercard Example API:
 -Add the CashMap-sandbox.p12 file to a local folder
 -Change 'keyStorePath' variable in example_placeById.js to point to .p12 file
 -In terminal, run node example_placeById.js
+
+
+
+Helpful Links:
+-Mastercard API: https://developers.mastercard.com/documentation/locations/1#get%20started

@@ -7,6 +7,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(express.static(__dirname + '/public'));
 
 // import my own js files
+var login = require('./login.js');
 var atm_locations = require('./atm_locations');
 var merchants_category = require('./example_merchants_category');
 var authenticate = require('./authenticate');
@@ -32,23 +33,9 @@ db.serialize(function() {
 
 	// "Log In" clicks
 	app.get('/login', function (req, res) {
-		var myUsername = req.query.username;
-		var myPassword = req.query.password;
-		console.log("Log In attempt..." + myUsername + ", " + myPassword);
-
-		if (!myUsername && !myPassword){ res.send("Enter the required fields");}
-		else if (!myUsername){res.send("Enter your username");}
-		else if (!myPassword){res.send("Enter your password");}
-		else {
-			db.all("SELECT * FROM users WHERE username = ?" +
-			" AND password = ?", [myUsername,myPassword], function(err,row){
-				if (row.length < 1){ // checks for empty list
-					res.send("Invalid credentials!");	
-				} else {
-					res.send("Logged in successfully!");
-				}
-			});
-		}
+		var username = req.query.username;
+		var password = req.query.password;
+		login.login(username, password, req, res);
 	});
 
 	// "Sign Up" clicks

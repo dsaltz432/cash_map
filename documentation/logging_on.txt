@@ -1,6 +1,6 @@
 ssh -i ~/Documents/secret_keys/MyFirstInstance.pem ec2-user@ec2-18-217-170-247.us-east-2.compute.amazonaws.com
 
-https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html
+Helpful URL: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html
 
 
 Keeping node server running in aws ec2 after quitting: ctrl+z, bg %1
