@@ -32,6 +32,7 @@ module.exports = {
   		query.keyword = params.filter;
   	}
 
+    console.log("query: ", query);
   	return googleMapsClient.placesNearby(query).asPromise();
   }
 };

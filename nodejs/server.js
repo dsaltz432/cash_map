@@ -8,17 +8,12 @@ app.use(express.static(__dirname + '/public'));
 
 // import my own js files
 var login = require('./login.js');
-var atm_locations = require('./atm_locations');
-var merchants_category = require('./example_merchants_category');
-var authenticate = require('./authenticate');
-var googleApi = require('./googleApi.js');
-var creditCards = require('./creditCards.js');
+var google_api = require('./google_api.js');
+var credit_cards = require('./credit_cards.js');
 
 // importing sqlite and creating the database
 var sqlite3 = require("sqlite3").verbose();
 var db = new sqlite3.Database("database.db");
-
-
 
 
 db.serialize(function() {
@@ -82,43 +77,45 @@ db.serialize(function() {
 		});	
 	});
 
-	// Test MasterCard API
-	app.get('/testMasterCardAPI', function (req, res) {
-		console.log("Trying to test MasterCard API...");
+	// // Test MasterCard API
+	// app.get('/testMasterCardAPI', function (req, res) {
+	// 	console.log("Trying to test MasterCard API...");
 
-		var directory = "../../../../../../Documents/secret_keys/";
-		var file_name = "key_info.txt";
+	// 	var directory = "../../../../../../Documents/secret_keys/";
+	// 	var file_name = "key_info.txt";
 
-	  	var contents = fs.readFileSync(directory + file_name, 'utf8');
-	  	var arr = contents.split("\n");
+	//   	var contents = fs.readFileSync(directory + file_name, 'utf8');
+	//   	var arr = contents.split("\n");
 
-	  	// 1st: Consumer Key, 2nd: keyAlias, 3rd: keyPassword
-		var consumerKey = arr[0].split(":")[1];
-		var keyAlias = arr[1].split(":")[1];
-		var keyPassword = arr[2].split(":")[1];
-		var keyStorePath = directory + "cashmap_sandbox_key.p12";
+	//   	// 1st: Consumer Key, 2nd: keyAlias, 3rd: keyPassword
+	// 	var consumerKey = arr[0].split(":")[1];
+	// 	var keyAlias = arr[1].split(":")[1];
+	// 	var keyPassword = arr[2].split(":")[1];
+	// 	var keyStorePath = directory + "cashmap_sandbox_key.p12";
 
 
-		authenticate.auth(consumerKey, keyStorePath, keyAlias, keyPassword);
-		atm_locations.testAPI();
-		merchants_category.testAPI();
+	// 	authenticate.auth(consumerKey, keyStorePath, keyAlias, keyPassword);
+	// 	atm_locations.testAPI();
+	// 	merchants_category.testAPI();
 
-	});
+	// });
 
 	app.get('/googleApiTest', function (req, res) {
 		console.log("Trying to call Google Test");
 
-		res.send(googleApi.geoCodeTest());
+		res.send(google_api.geoCodeTest());
 	});
 
 	app.get('/mapsSearchNearby', function (req, res) {
 		console.log("Google Maps Search Nearby", req.query.lng, req.query.lat, req.query.radius);
-		googleApi.searchNearby(req.query).then((response) => {
+		google_api.searchNearby(req.query).then((response) => {
   			console.log(response);
   			for(let i = 0; i < response.json.results.length; i++){
   				console.log(response.json.results[i]);
   			}
-  			let places = creditCards.getCashBack(creditCards.getCashBack(response.json.results));
+  			// let places = credit_cards.getCashBack(credit_cards.getCashBack(response.json.results));
+  			let places = credit_cards.getCashBack(response.json.results);
+
 
   			res.send(places);
 	  	})
