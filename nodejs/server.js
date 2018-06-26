@@ -11,10 +11,14 @@ var login = require('./login.js');
 var atm_locations = require('./atm_locations');
 var merchants_category = require('./example_merchants_category');
 var authenticate = require('./authenticate');
+var googleApi = require('./googleApi.js');
+var creditCards = require('./creditCards.js');
 
 // importing sqlite and creating the database
 var sqlite3 = require("sqlite3").verbose();
 var db = new sqlite3.Database("database.db");
+
+
 
 
 db.serialize(function() {
@@ -101,6 +105,29 @@ db.serialize(function() {
 
 	});
 
+	app.get('/googleApiTest', function (req, res) {
+		console.log("Trying to call Google Test");
+
+		res.send(googleApi.geoCodeTest());
+	});
+
+	app.get('/mapsSearchNearby', function (req, res) {
+		console.log("Google Maps Search Nearby", req.query.lng, req.query.lat, req.query.radius);
+		googleApi.searchNearby(req.query).then((response) => {
+  			console.log(response);
+  			for(let i = 0; i < response.json.results.length; i++){
+  				console.log(response.json.results[i]);
+  			}
+  			let places = creditCards.getCashBack(creditCards.getCashBack(response.json.results));
+
+  			res.send(places);
+	  	})
+	  	.catch((err) => {
+	  		console.log("SEARCH NEARBY ERROR");
+	  		return "Error";
+	  	});
+		
+	});
 });
 
 
