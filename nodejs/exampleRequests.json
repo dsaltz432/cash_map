@@ -1,10 +1,11 @@
-/mapsSearchNearby = {
+INPUT: /mapsSearchNearby = {
 	lng: 123,
 	lat: 456,
 	radius: "",
 	filter: ""
 }
 
+OUTPUT: /mapsSearchNearby = 
 [
 	{ geometry: { location: { lat: 41.90199, lng: -87.6288742 },
 	  viewport: { northeast: [Object], southwest: [Object] } },
