@@ -1,8 +1,8 @@
 INPUT: /mapsSearchNearby = {
-	lng: 123,
-	lat: 456,
-	radius: "",
-	filter: ""
+	lng: -87.628981,
+	lat: 41.902560,
+	radius: 100,
+	filter: "restaurant" (OPTIONAL)
 }
 
 OUTPUT: /mapsSearchNearby = 
