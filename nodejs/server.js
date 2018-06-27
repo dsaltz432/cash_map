@@ -115,18 +115,51 @@ db.serialize(function() {
 		console.log("Google Maps Search Nearby", req.query.lng, req.query.lat, req.query.radius);
 		googleApi.searchNearby(req.query).then((response) => {
   			console.log(response);
-  			for(let i = 0; i < response.json.results.length; i++){
-  				console.log(response.json.results[i]);
-  			}
-  			let places = creditCards.getCashBack(creditCards.getCashBack(response.json.results));
 
-  			res.send(places);
+  			let allResults = [];
+  			allResults.concat(response.json.results);
+
+  			req.query.pagetoken = response.json.next_page_token;
+  			
+  			//while(response.json.next_page_token){
+  				for(let i = 0; i < response.json.results.length; i++){
+  					console.log(response.json.results[i]);
+  				}
+  				googleApi.searchNearby(req.query).then(response => {
+  					console.log("RESPONSE 2");
+  					console.log(response);
+  					for(let i = 0; i < response.json.results.length; i++){
+	  					console.log(response.json.results[i]);
+	  				}
+  					allResults.concat(response.json.results);
+  					req.query.pagetoken = response.json.next_page_token;
+  				})
+  				.catch(err => {
+  					console.log("SEARCH NEARBY 2 ERROR");
+  					console.log(err);
+  					return "Error";
+  				});
+  			//}
+
+  			//let places = creditCards.getCashBack(creditCards.getCashBack(allResults));
+
+  			res.send(allResults);
+  			return allResults;
 	  	})
 	  	.catch((err) => {
 	  		console.log("SEARCH NEARBY ERROR");
+	  		console.log(err);
 	  		return "Error";
 	  	});
 		
+	});
+
+	app.get('/mapsQueryPlaces', function (req, res) {
+		res.send(googleApi.queryPlaces(req.query));
+	});
+
+	app.get('/getAllCC', function (req, res) {
+		res.send(creditCards.getCurrentCreditCards());
 	});
 });
 

@@ -32,6 +32,28 @@ module.exports = {
   		query.keyword = params.filter;
   	}
 
+  	if(params.pagetoken) {
+  		query = {};
+  		query.pagetoken = params.pagetoken;
+  	}
+
   	return googleMapsClient.placesNearby(query).asPromise();
+  },
+  queryPlaces: function(params) {
+  	console.log("Querying Places: ");
+
+  	let query = {};
+  	query.query = params.filter;
+  	query.location = [params.lat, params.lng];
+  	query.radius = +params.radius;
+
+  	return googleMapsClient.places(query).asPromise().then(response => {
+  		console.log(response.json.results);
+  		return response.json.results;
+  	})
+  	.catch(err => {
+  		console.log(err);
+  		return "ERROR";
+  	});
   }
 };
