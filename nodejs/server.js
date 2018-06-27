@@ -119,29 +119,31 @@ db.serialize(function() {
   			let allResults = [];
   			allResults.concat(response.json.results);
 
-  			req.query.pagetoken = response.json.next_page_token;
+  			//req.query.pagetoken = response.json.next_page_token;
   			
   			//while(response.json.next_page_token){
-  				for(let i = 0; i < response.json.results.length; i++){
-  					console.log(response.json.results[i]);
-  				}
-  				googleApi.searchNearby(req.query).then(response => {
-  					console.log("RESPONSE 2");
-  					console.log(response);
-  					for(let i = 0; i < response.json.results.length; i++){
-	  					console.log(response.json.results[i]);
-	  				}
-  					allResults.concat(response.json.results);
-  					req.query.pagetoken = response.json.next_page_token;
-  				})
-  				.catch(err => {
-  					console.log("SEARCH NEARBY 2 ERROR");
-  					console.log(err);
-  					return "Error";
-  				});
+  				// for(let i = 0; i < response.json.results.length; i++){
+  				// 	console.log(response.json.results[i]);
+  				// }
+  				// googleApi.searchNearby(req.query).then(response => {
+  				// 	console.log("RESPONSE 2");
+  				// 	console.log(response);
+  				// 	for(let i = 0; i < response.json.results.length; i++){
+	  			// 		console.log(response.json.results[i]);
+	  			// 	}
+  				// 	allResults.concat(response.json.results);
+  				// 	req.query.pagetoken = response.json.next_page_token;
+  				// })
+  				// .catch(err => {
+  				// 	console.log("SEARCH NEARBY 2 ERROR");
+  				// 	console.log(err);
+  				// 	return "Error";
+  				// });
   			//}
 
   			//let places = creditCards.getCashBack(creditCards.getCashBack(allResults));
+
+  			console.log(allResults);
 
   			res.send(allResults);
   			return allResults;
@@ -160,7 +162,7 @@ db.serialize(function() {
 
 	app.get('/getAllCC', function (req, res) {
 		res.send(creditCards.getCurrentCreditCards());
-	});
+	})
 });
 
 

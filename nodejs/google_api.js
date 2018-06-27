@@ -37,6 +37,7 @@ module.exports = {
   		query.pagetoken = params.pagetoken;
   	}
 
+    console.log("query: ", query);
   	return googleMapsClient.placesNearby(query).asPromise();
   },
   queryPlaces: function(params) {

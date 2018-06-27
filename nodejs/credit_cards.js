@@ -1,9 +1,9 @@
 var allCreditCards = {
 				"AMERICAN_EXPRESS": {
-					"restaurant": 3, "health": 2, "pharmacy: ": 1
+					"restaurant": 3, "health": 2, "pharmacy: ": 1, "gym: ": 1
 				}, 
 				"CHASE_FREEDOM": {
-					"restaurant": 1, "health": 5, "pharmacy: ": 1
+					"restaurant": 1, "health": 5, "pharmacy: ": 1, "gym: ": 2
 				}
 			};
 
@@ -65,6 +65,7 @@ module.exports = {
 			}
 		}
 
+		console.log("Found " + places.length + " results");
 		return places;
 	}
 
