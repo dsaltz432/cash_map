@@ -1,0 +1,16 @@
+{
+  "appenders": {
+    "console": {
+      "type": "console"
+    },
+    "file": {
+      "type": "file",
+      "filename": "../logs/cash_map.log",
+      "maxLogSize": 2048,
+      "backups": 3
+    }
+  },
+  "categories": {
+    "default": { "appenders": ["file"], "level": "info" }
+  }
+}
