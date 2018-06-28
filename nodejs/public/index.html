@@ -122,10 +122,9 @@ $(document).ready(function() {
       url: "/mapsQueryPlaces",
       type: "GET", 
       dataType : "text",
-      data : { lat: $("#latitude1").val(),
-               lng: $("#longitude1").val(),
+      data : { location: $("#latitude1").val() + "," + $("#longitude1").val(),
                radius: $("#radius1").val(),
-               filter: $("#filter1").val()
+               query: $("#filter1").val()
              },
       success: function(data) {  
         console.log(data); 
