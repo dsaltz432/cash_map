@@ -101,9 +101,6 @@ db.serialize(function() {
 	app.get('/mapsSearchByCC', function(req, res) {
 		console.log("Google Maps Search by Credit Card");
 		console.log(req.query);
-		//get return types from credit card inputs
-		let ccList = ["DISCOVER_IT_CASH_BACK", "AMERICAN_EXPRESS_BLUE_CASH_PREFERRED","BANK_OF_AMERICA_CASH_REWARDS"];
-		res.send(credit_cards.getTypesFromCards(ccList));
 
 		const { location, radius, ccList } = req.query;
 		// // uncomment below (and comment the line above) to test hardcoded query 
@@ -113,7 +110,7 @@ db.serialize(function() {
 
 		const typesArray = creditCards.getUniqueTypesFromCards(ccList);
 
-		googleApi.searchNearbyMultipleTypes({location, radius, typesArray})
+		google_api.searchNearbyMultipleTypes({location, radius, typesArray})
 			.then(results => res.send(results))
 			.catch(err => {throw new Error(err)});
 	});
@@ -128,8 +125,11 @@ db.serialize(function() {
 			delete req.query.location;
 		}
 		req.query.radius = +req.query.radius;
-		googleApi.searchNearby(req.query)
-			.then(results => res.send(Object.assign(results, {data: results.json})))
+		google_api.searchNearby(req.query)
+			.then(results => {
+				console.log(results.json);
+				res.send(results.json);
+		})
 			.catch(err => {
 				console.error(err);
 				throw new Error(err);

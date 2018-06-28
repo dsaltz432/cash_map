@@ -31,7 +31,7 @@ module.exports = {
 		return Promise.all(typesArray.map(type => this.searchNearby({location, radius, type})))
 	},
 	searchNearby: function ({location, radius, type}) {
-    log.info("searchNearby: ", "Latitude: ", params.lat, "Longitude: ", params.lng, "Filter: ", params.filter);
+    log.info("searchNearby: ", "Location: ", location, "Radius: ", radius, "Filter: ", type);
 		console.log(`Searching Nearby: ${location} | ${radius} | ${type}`);
 		return googleMapsClient.placesNearby({location, radius, type}).asPromise();
 	},
