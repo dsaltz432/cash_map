@@ -1,26 +1,46 @@
 // importing sqlite and creating the database
-var sqlite3 = require("sqlite3").verbose();
-var db = new sqlite3.Database("database.db");
+let sqlite3 = require("sqlite3").verbose();
+let db = new sqlite3.Database("database.db");
 
+// import logger
+const log4js = require('log4js');
+log4js.configure("../config/log4js.json");
+const log = log4js.getLogger('test');
 
 module.exports = {
   login: function (username, password, req, res) {
 
-  	console.log("Log In attempt..." + username + ", " + password);
+  	log.info("Log In attempt, username: " + username + ", password: " + password);
+	let response = "";
 
-	if (!username && !password){ res.send("Enter the required fields");}
-	else if (!username){res.send("Enter your username");}
-	else if (!password){res.send("Enter your password");}
+	if (!username && !password){ 
+		response = "Enter the required fields";
+		log.info(response);
+		res.send(response);
+	}
+	else if (!username){
+		response = "Enter your username";
+		log.info(response);
+		res.send(response);	
+	}
+	else if (!password){
+		response = "Enter your password";
+		log.info(response);
+		res.send(response);	
+	}
 	else {
-		db.all("SELECT * FROM users WHERE username = ?" +
-		" AND password = ?", [username,password], function(err,row){
+		let query = "SELECT * FROM users WHERE username = ? AND password = ?";
+		log.info(query);
+
+		db.all(query, [username,password], function(err,row){
 			if (row.length < 1){ // checks for empty list
-				res.send("Invalid credentials!");	
+				response = "Invalid credentials!";
 			} else {
-				res.send("Logged in successfully!");
+				response = "Logged in successfully!";
 			}
+			log.info(response);
+			res.send(response);	
 		});
 	}
-
   }
 };
