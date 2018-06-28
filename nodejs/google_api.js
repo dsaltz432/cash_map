@@ -35,21 +35,17 @@ module.exports = {
 		log.info(`Searching Nearby: ${location} | ${radius} | ${type}`);
 		return googleMapsClient.placesNearby({location, radius, type}).asPromise();
 	},
-	// queryPlaces: function (params) {
-	// 	console.log("Querying Places: ");
+	queryPlaces: function ({location, radius, query}) {
+		log.info("Querying Places: ");
 
-	// 	let query = {};
-	// 	query.query = params.filter;
-	// 	query.location = [params.lat, params.lng];
-	// 	query.radius = +params.radius;
-
-	// 	return googleMapsClient.places(query).asPromise().then(response => {
-	// 		console.log(response.json.results);
-	// 		return response.json.results;
-	// 	})
-	// 		.catch(err => {
-	// 			console.log(err);
-	// 			return "ERROR";
-	// 		});
-	// }
+		return googleMapsClient.places({location, radius, query}).asPromise().then(response => {
+      log.info(`Search Places by Text: ${location} | ${radius} | ${query}`);
+			log.info(response.json);
+			return response.json;
+		})
+			.catch(err => {
+				console.log(err);
+				return "ERROR";
+			});
+	}
 };

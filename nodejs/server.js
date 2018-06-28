@@ -175,9 +175,10 @@ db.serialize(function() {
 	// });
 
 
-	// app.get('/mapsQueryPlaces', function (req, res) {
-	// 	res.send(google_api.queryPlaces(req.query));
-	// });
+	app.get('/mapsQueryPlaces', function (req, res) {
+		req.query.radius = +req.query.radius;
+		res.send(google_api.queryPlaces(req.query));
+	});
 
 	// app.get('/getAllCC', function (req, res) {
 	// 	res.send(credit_cards.getCurrentCreditCards());
