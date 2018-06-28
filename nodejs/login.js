@@ -7,6 +7,9 @@ const log4js = require('log4js');
 log4js.configure("../config/log4js.json");
 const log = log4js.getLogger('test');
 
+var encryption = require('./encryption.js');
+var bcrypt = require('bcryptjs');
+
 module.exports = {
   login: function (username, password, req, res) {
 
@@ -33,19 +36,33 @@ module.exports = {
 		res.send(json);
 	}
 	else {
-		let query = "SELECT * FROM users WHERE username = ? AND password = ?";
+
+		encryption.getPassword(username).then((response) => {
+				
+		var ePassword = response.rows[0]['password'];
+		log.info(ePassword);
+
+		let query = "SELECT * FROM users WHERE username = ?";
 		log.info(query);
 
-		db.all(query, [username,password], function(err,row){
+		db.all(query, [username], function(err,row){
 			if (row.length < 1){ // checks for empty list
 				error = "Invalid credentials!";
+			 } else if (!bcrypt.compareSync(password, ePassword)) {
+			 	error = "Invalid password!";
 			} else {
 				error = null;
 			}
 			json.error = error;
 			log.info("error: " + error);
-			res.send(response);	
-		});
+			res.send(error);	
+			});
+	  	})
+	  	.catch((err) => {
+		  	json.error = err.error;
+		  	log.info(json);
+		  	res.send(json);
+	  	});
 	}
   }
 };
