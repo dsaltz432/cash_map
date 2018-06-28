@@ -15,31 +15,31 @@ var bcrypt = require('bcryptjs');
 var salt = bcrypt.genSaltSync(10);
 
 module.exports = {
-  encryption: function (password, req, res) {
+  encrypt: function (password, req, res) {
   	var hash = bcrypt.hashSync(password, salt);
 	log.info("Password Encrypted");
 	return hash;
   },
 	getPassword: function(username) {
-	return new Promise(function (resolve, reject) {
-	var responseObj;
-	let query = "SELECT password FROM users WHERE username = ?";
-	log.info(query + " " + username);
+		return new Promise(function (resolve, reject) {
+			var responseObj;
+			let query = "SELECT password FROM users WHERE username = ?";
+			log.info(query + " " + username);
 
-	db.all(query,[username], function cb(err, rows) {
-	  if (err) {
-	    responseObj = {
-	      'error': err
-	    };
-	    reject(responseObj);
-	  } else {
-	    responseObj = {
-	      statement: this,
-	      rows: rows
-	    };
-	    resolve(responseObj);
-	    }
-	  });
-	});
+			db.all(query,[username], function cb(err, rows) {
+			  if (err) {
+			    responseObj = {
+			      'error': err
+			    };
+			    reject(responseObj);
+			  } else {
+			    responseObj = {
+			      statement: this,
+			      rows: rows
+			    };
+			    resolve(responseObj);
+			    }
+			  });
+		});
 	}
 };

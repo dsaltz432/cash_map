@@ -46,7 +46,7 @@ module.exports = {
 
 			db.all(query, [username], function(err,row){
 				if (row.length < 1){ // checks for empty list
-					var ePassword = encryption.encryption(password);
+					var ePassword = encryption.encrypt(password);
 					log.info("INSERT INTO users VALUES (?,?) " + username + ", " + ePassword);
 					db.run("INSERT INTO users VALUES (?,?)",[username,ePassword], function(err, row) {
 						if (err != null){ response = "Failed to create new account";}
