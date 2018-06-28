@@ -4,7 +4,10 @@ let db = new sqlite3.Database("database.db");
 
 // import logger
 const log4js = require('log4js');
-log4js.configure("../config/log4js.json");
+log4js.configure({
+  appenders: { 'file': { type: 'file', filename: '../logs/cash_map.log' } },
+  categories: { default: { appenders: ['file'], level: 'info' } }
+});
 const log = log4js.getLogger('test');
 
 var encryption = require('./encryption.js');
@@ -19,19 +22,19 @@ module.exports = {
 
 	if (!username && !password){ 
 		error = "Enter the required fields";
-			log.info("error: " + error);
+		log.info("error: " + error);
 		json.error = error;
 		res.send(json);
 	}
 	else if (!username){
 		response = "Enter your username";
-			log.info("error: " + error);
+		log.info("error: " + error);
 		json.error = error;
 		res.send(json);
 	}
 	else if (!password){
 		response = "Enter your password";
-			log.info("error: " + error);
+		log.info("error: " + error);
 		json.error = error;
 		res.send(json);
 	}

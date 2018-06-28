@@ -4,7 +4,10 @@ let db = new sqlite3.Database("database.db");
 
 // import logger
 const log4js = require('log4js');
-log4js.configure("../config/log4js.json");
+log4js.configure({
+  appenders: { 'file': { type: 'file', filename: '../logs/cash_map.log' } },
+  categories: { default: { appenders: ['file'], level: 'info' } }
+});
 const log = log4js.getLogger('test');
 
 
