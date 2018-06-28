@@ -16,22 +16,6 @@ $(document).ready(function() {
       Ajax requests to the server
 ************************************************/
 
-  // "Delete All Users" clicked
-  $("#delete").click(function() { // when login button is clicked
-    $.ajax({
-      url: "/delete",
-      type: "POST",
-      dataType: "text", 
-      data: {},
-      success: function(data) {
-         $("#passwordField").val("");
-         $("#usernameField").val("");    
-         $("#status").html(data); 
-      },
-    });
-   });
-
-
   // "Log In" clicked
   $("#login").click(function() { // when login button is clicked
     $.ajax({
@@ -118,8 +102,6 @@ $(document).ready(function() {
       <button type="button" class="btn btn-primary btn-lg" id="signup">Create New Account</button>
       <br>
   		<button type="button" class="btn btn-primary btn-lg" id="login">Log In</button>
-      <br>
-      <button type="button" class="btn btn-primary btn-lg" id="delete">Delete All Users</button>
 
     <div id="lat">Latitude: <input id="latitude" type="text" size="20"/></div>
     <div id="long">Longitude: <input id="longitude" type="text" size="20"/></div>

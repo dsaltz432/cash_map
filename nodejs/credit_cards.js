@@ -1,4 +1,9 @@
-var allCreditCards = {
+// import logger
+const log4js = require('log4js');
+log4js.configure("../config/log4js.json");
+const log = log4js.getLogger('test');
+
+let allCreditCards = {
 				"AMERICAN_EXPRESS": {
 					"restaurant": 3, "health": 2, "pharmacy: ": 1, "gym: ": 1
 				}, 
@@ -64,8 +69,33 @@ module.exports = {
 		return allTypes;
 	},
 
+	addCard: function(username, card, req, res) {
+
+  		log.info("Adding Card, username: " + username + ", card: " + card);
+
+  			// first check if that username and card exists in the table already
+			let query = "SELECT * FROM users WHERE username = ? AND card = ?";
+			log.info(query);
+
+			db.all(query, [username], function(err,row){
+				if (row.length < 1){ // checks for empty list
+					log.info("INSERT INTO users VALUES (?,?) " + username + ", " + card);
+					db.run("INSERT INTO users VALUES (?,?)",[username,card], function(err, row) {
+						if (err != null){ response = "Error adding new card!";}
+						else { response = "Added " + card + " for" + username;}
+						log.info(response);
+						res.send(response);
+					});	
+				} else {
+					response = "Already added that card for that user!";
+					log.info(response);
+					res.send(response);
+				}
+			});
+
+	},
+
 	getCashBack: function(places) {
-		console.log("Getting Cash Back");
 		for(let i = 0; i < places.length; i++){
 			places[i].cash_back = null;
 			places[i].recommended_card = "";
@@ -83,7 +113,7 @@ module.exports = {
 			}
 		}
 
-		console.log("Found " + places.length + " results");
+		log.info("Found " + places.length + " results");
 		return places;
 	}
 
