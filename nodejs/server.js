@@ -68,6 +68,45 @@ db.serialize(function() {
 		credit_cards.addCard(username, card, req, res);
 	});
 
+	// "Remove Card" clicks
+	app.post('/removeCard', function (req, res) {
+		let postBody = req.body;
+		let username = postBody.username;
+		let card = postBody.card;
+		credit_cards.removeCard(username, card, req, res);
+	});
+
+	// "Remove Card" clicks
+	app.get('/getCards', function (req, res) {
+		let username = req.query.username;
+
+		let json = {};
+		json.username = username;
+		let error = null;
+		let cardsArr = [];
+		json.cards = cardsArr;
+		json.error = error;
+
+		credit_cards.getCards(username).then((response) => {
+			for (let i = 0; i < response.rows.length; i++){
+				cardsArr[i] = response.rows[i]['card'];
+			}
+
+			if (cardsArr.length == 0){
+				error = "No cards for that user";
+				json.error = error;
+			}
+
+		  	log.info(json);
+		  	res.send(json);
+
+	  	})
+	  	.catch((err) => {
+	  		json.error = err.error;
+	  		log.info(json);
+	  		res.send(json);
+	  	});
+	});
 
 	// Test MasterCard API
 	app.get('/testMasterCardAPI', function (req, res) {
