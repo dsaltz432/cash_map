@@ -177,7 +177,10 @@ db.serialize(function() {
 
 	app.get('/mapsQueryPlaces', function (req, res) {
 		req.query.radius = +req.query.radius;
-		res.send(google_api.queryPlaces(req.query));
+		google_api.queryPlaces(req.query).then( result => {
+			res.send(result);
+		})
+		.catch(log.info);
 	});
 
 	// app.get('/getAllCC', function (req, res) {
