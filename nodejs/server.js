@@ -100,12 +100,22 @@ db.serialize(function() {
 
 	app.get('/mapsSearchByCC', function(req, res) {
 		console.log("Google Maps Search by Credit Card");
+		console.log(req.query);
 		//get return types from credit card inputs
 		let ccList = ["DISCOVER_IT_CASH_BACK", "AMERICAN_EXPRESS_BLUE_CASH_PREFERRED","BANK_OF_AMERICA_CASH_REWARDS"];
 		res.send(credit_cards.getTypesFromCards(ccList));
 
-		//run search on google maps
-		
+		const { location, radius, ccList } = req.query;
+		// // uncomment below (and comment the line above) to test hardcoded query 
+		// const ccList = ['DISCOVER_IT_CASH_BACK'];
+		// const location = '37.33025622,-122.02763446';
+		// const radius = 388.96666666666664;
+
+		const typesArray = creditCards.getUniqueTypesFromCards(ccList);
+
+		googleApi.searchNearbyMultipleTypes({location, radius, typesArray})
+			.then(results => res.send(results))
+			.catch(err => {throw new Error(err)});
 	});
 
 	app.get('/mapsSearchbyType', function(req, res) {
@@ -113,22 +123,17 @@ db.serialize(function() {
 	});
 
 	app.get('/mapsSearchNearby', function (req, res) {
-		console.log("Google Maps Search Nearby", req.query.lng, req.query.lat, req.query.radius);
-		google_api.searchNearby(req.query).then((response) => {
-  			console.log(response);
-
-  			for(let i = 0; i < response.json.results.length; i++){
-  				console.log(response.json.results[i]);
-  			}
-  			let places = credit_cards.getCashBack(response.json.results);
-
-  			res.send(places);
-	  	})
-	  	.catch((err) => {
-	  		log.info("SEARCH NEARBY ERROR");
-	  		return "SEARCH NEARBY ERROR";
-	  	});
-		
+		console.log("Google Maps Search Nearby", req.query);
+		if (req.query.pagetoken) {
+			delete req.query.location;
+		}
+		req.query.radius = +req.query.radius;
+		googleApi.searchNearby(req.query)
+			.then(results => res.send(Object.assign(results, {data: results.json})))
+			.catch(err => {
+				console.error(err);
+				throw new Error(err);
+			});
 	});
 
 	app.get('/mapsQueryPlaces', function (req, res) {
