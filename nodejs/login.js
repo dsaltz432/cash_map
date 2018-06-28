@@ -11,22 +11,26 @@ module.exports = {
   login: function (username, password, req, res) {
 
   	log.info("Log In attempt, username: " + username + ", password: " + password);
-	let response = "";
+	let error = "";
+	let json = {};
 
 	if (!username && !password){ 
-		response = "Enter the required fields";
-		log.info(response);
-		res.send(response);
+		error = "Enter the required fields";
+			log.info("error: " + error);
+		json.error = error;
+		res.send(json);
 	}
 	else if (!username){
 		response = "Enter your username";
-		log.info(response);
-		res.send(response);	
+			log.info("error: " + error);
+		json.error = error;
+		res.send(json);
 	}
 	else if (!password){
 		response = "Enter your password";
-		log.info(response);
-		res.send(response);	
+			log.info("error: " + error);
+		json.error = error;
+		res.send(json);
 	}
 	else {
 		let query = "SELECT * FROM users WHERE username = ? AND password = ?";
@@ -34,11 +38,12 @@ module.exports = {
 
 		db.all(query, [username,password], function(err,row){
 			if (row.length < 1){ // checks for empty list
-				response = "Invalid credentials!";
+				error = "Invalid credentials!";
 			} else {
-				response = "Logged in successfully!";
+				error = null;
 			}
-			log.info(response);
+			json.error = error;
+			log.info("error: " + error);
 			res.send(response);	
 		});
 	}

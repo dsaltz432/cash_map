@@ -69,6 +69,32 @@ module.exports = {
 		return allTypes;
 	},
 
+	addCard: function(username, card, req, res) {
+
+  		log.info("Adding Card, username: " + username + ", card: " + card);
+
+  			// first check if that username and card exists in the table already
+			let query = "SELECT * FROM users WHERE username = ? AND card = ?";
+			log.info(query);
+
+			db.all(query, [username], function(err,row){
+				if (row.length < 1){ // checks for empty list
+					log.info("INSERT INTO users VALUES (?,?) " + username + ", " + card);
+					db.run("INSERT INTO users VALUES (?,?)",[username,card], function(err, row) {
+						if (err != null){ response = "Error adding new card!";}
+						else { response = "Added " + card + " for" + username;}
+						log.info(response);
+						res.send(response);
+					});	
+				} else {
+					response = "Already added that card for that user!";
+					log.info(response);
+					res.send(response);
+				}
+			});
+
+	},
+
 	getCashBack: function(places) {
 		for(let i = 0; i < places.length; i++){
 			places[i].cash_back = null;

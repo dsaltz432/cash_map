@@ -36,6 +36,10 @@ db.serialize(function() {
 	db.run("CREATE TABLE if not exists users "+
 		"(username TEXT NOT NULL,password TEXT NOT NULL,PRIMARY KEY (username))");
 
+	db.run("CREATE TABLE if not exists credit_cards "+
+		"(username TEXT NOT NULL,card TEXT NOT NULL,PRIMARY KEY (username,card))");
+
+
 /***********************************************
 	Handling requests from index.html
 ************************************************/
@@ -53,6 +57,15 @@ db.serialize(function() {
 		let username = postBody.username;
 		let password = postBody.password;
 		signup.signup(username, password, req, res);
+	});
+
+
+	// "Add Card" clicks
+	app.post('/addCard', function (req, res) {
+		let postBody = req.body;
+		let username = postBody.username;
+		let card = postBody.card;
+		credit_cards.addCard(username, card, req, res);
 	});
 
 
