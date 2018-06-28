@@ -46,7 +46,7 @@ module.exports = {
 		return allCreditCardsQ3;
 	},
 
-	getTypesFromCards: function(cards) {
+	getUniqueTypesFromCards: function(cards) {
 		let allTypes = [];
 		for(let i = 0; i < cards.length; ++i){
 			console.log(allCreditCardsQ3[cards[i]]);
