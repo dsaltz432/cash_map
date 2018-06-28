@@ -1,3 +1,7 @@
+// importing sqlite and creating the database
+let sqlite3 = require("sqlite3").verbose();
+let db = new sqlite3.Database("database.db");
+
 // import logger
 const log4js = require('log4js');
 log4js.configure("../config/log4js.json");
@@ -72,27 +76,109 @@ module.exports = {
 	addCard: function(username, card, req, res) {
 
   		log.info("Adding Card, username: " + username + ", card: " + card);
+  		let error = "";
 
-  			// first check if that username and card exists in the table already
-			let query = "SELECT * FROM users WHERE username = ? AND card = ?";
-			log.info(query);
+  		// verify that the card name is valid
+  		let valid = false;
+		for (var currentCard in allCreditCardsQ3){
+			if (card == currentCard){
+				valid = true;
+				break;
+			}
+		}
+		if (!valid){
+			error = "Card: " + card + " was not valid";
+			log.info("error: " + error);
+			res.send(error);
+			return;
+		}
 
-			db.all(query, [username], function(err,row){
-				if (row.length < 1){ // checks for empty list
-					log.info("INSERT INTO users VALUES (?,?) " + username + ", " + card);
-					db.run("INSERT INTO users VALUES (?,?)",[username,card], function(err, row) {
-						if (err != null){ response = "Error adding new card!";}
-						else { response = "Added " + card + " for" + username;}
-						log.info(response);
-						res.send(response);
-					});	
-				} else {
-					response = "Already added that card for that user!";
-					log.info(response);
-					res.send(response);
-				}
-			});
+		// first check if that username and card exists in the table already
+		query = "SELECT * FROM credit_cards WHERE username = ? AND card = ?";
+		log.info(query);
 
+		db.all(query, [username,card], function(err,row){
+			if (row.length < 1){ // checks for empty list
+				log.info("INSERT INTO credit_cards VALUES (?,?) " + username + ", " + card);
+				db.run("INSERT INTO credit_cards VALUES (?,?)",[username,card], function(err, row) {
+					if (err != null){ error = "Error adding new card!";}
+					else { error = null;}
+					log.info("error: " + error);
+					res.send(error);
+				});	
+			} else {
+				error = "The card " + card + " already exists for user " + username;
+				log.info("error: " + error);
+				res.send(error);
+			}
+		});
+	},
+
+	removeCard: function(username, card, req, res) {
+
+  		log.info("Removing Card, username: " + username + ", card: " + card);
+  		let error = "";
+
+  		// verify that the card name is valid
+  		let valid = false;
+		for (var currentCard in allCreditCardsQ3){
+			if (card == currentCard){
+				valid = true;
+				break;
+			}
+		}
+		if (!valid){
+			error = "Card: " + card + " was not valid";
+			log.info("error: " + error);
+			res.send(error);
+			return;
+		}
+
+		// first check if that username and card exists in the table already
+		query = "SELECT * FROM credit_cards WHERE username = ? AND card = ?";
+		log.info(query);
+
+		db.all(query, [username,card], function(err,row){
+			if (row.length >= 1){ // checks for empty list
+				log.info("DELETE FROM credit_cards WHERE username = ? and card = ? " + username + ", " + card);
+				db.run("DELETE FROM credit_cards WHERE username = ? and card = ?",[username,card], function(err, row) {
+					if (err != null){ error = "Error removing card!";}
+					else { error = null;}
+					log.info("error: " + error);
+					res.send(error);
+				});	
+			} else {
+				error = "The card " + card + " does not exist for user " + username;
+				log.info("error: " + error);
+				res.send(error);
+			}
+		});
+	},
+
+	getCards: function(username) {
+  		log.info("Getting cards for user " + username);
+  		let error = "";
+
+		return new Promise(function (resolve, reject) {
+		    var responseObj;
+		    let query = "select card from credit_cards WHERE username = ?";
+		    log.info(query + " " + username);
+
+		    db.all(query,[username], null, function cb(err, rows) {
+		      if (err) {
+		        responseObj = {
+		          'error': err
+		        };
+		        reject(responseObj);
+		      } else {
+		        responseObj = {
+		          statement: this,
+		          rows: rows
+		        };
+		        resolve(responseObj);
+		      }
+		    });
+		  });
 	},
 
 	getCashBack: function(places) {
@@ -105,7 +191,7 @@ module.exports = {
 						places[i].cash_back = allCreditCards["AMERICAN_EXPRESS"][places[i].types[j]];
 						places[i].recommended_card = "AMERICAN_EXPRESS";
 					}
-					else{
+					else {
 						places[i].cash_back = allCreditCards["CHASE_FREEDOM"][places[i].types[j]];
 						places[i].recommended_card = "CHASE_FREEDOM";
 					}

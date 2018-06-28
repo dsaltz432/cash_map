@@ -43,7 +43,7 @@ module.exports = {
 					log.info("INSERT INTO users VALUES (?,?) " + username + ", " + password);
 					db.run("INSERT INTO users VALUES (?,?)",[username,password], function(err, row) {
 						if (err != null){ response = "Failed to create new account";}
-						else { response = "Created a new account!";}
+						else { response = null;}
 						log.info(response);
 						res.send(response);
 					});	

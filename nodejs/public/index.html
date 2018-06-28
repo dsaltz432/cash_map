@@ -50,6 +50,54 @@ $(document).ready(function() {
     });
   });
 
+  // "Add Card" clicked
+  $("#addCard").click(function() { // when login button is clicked
+    $.ajax({
+      url: "/addCard",
+      type: "POST",
+      dataType: "text", 
+      data : { username: $("#usernameField1").val(),
+               card: $("#cardField1").val(),
+             },
+      success: function(data) {
+          $("#usernameField1").val("");
+          $("#cardField1").val("");    
+          $("#status").html(data); 
+      },
+    });
+   });
+
+  // "Remove Card" clicked
+  $("#removeCard").click(function() { // when login button is clicked
+    $.ajax({
+      url: "/removeCard",
+      type: "POST",
+      dataType: "text", 
+      data : { username: $("#usernameField1").val(),
+               card: $("#cardField1").val(),
+             },
+      success: function(data) {
+          $("#usernameField1").val("");
+          $("#cardField1").val("");    
+          $("#status").html(data); 
+      },
+    });
+   });
+
+  // "Get Cards" clicked
+  $("#getCards").click(function() { // when login button is clicked
+    $.ajax({
+      url: "/getCards",
+      type: "GET",
+      dataType: "text", 
+      data : { username: $("#usernameField1").val()},
+      success: function(data) {
+          $("#usernameField1").val("");
+          $("#status").html(data); 
+      },
+    });
+   });
+
     // "Search Nearby" clicked
     $("#nearbyPlaces").click(function() { 
     $.ajax({
@@ -94,33 +142,56 @@ $(document).ready(function() {
 
 <div id="wrap">
   <div id="container"> 
-    <h2 id="login_header">Log In</h2>
+
+   <!-- outputs status for success or failure -->
+      <div id="status"></div>
+      <br>
+      <br>
+
   	<div id="username">Username: <input id="usernameField" type="text" size="20"/></div>
   	<div id="password">Password: <input id="passwordField" type="password" size="20"/></div>
+    <br>
+    <button type="button" class="btn btn-primary btn-lg" id="signup">Create New Account</button>
+		<button type="button" class="btn btn-primary btn-lg" id="login">Log In</button>
 
-  	<div id="buttons">
-      <button type="button" class="btn btn-primary btn-lg" id="signup">Create New Account</button>
       <br>
-  		<button type="button" class="btn btn-primary btn-lg" id="login">Log In</button>
+      <br>
+      <br>
+      <br>
+      <br>
+
+    <div id="username">Username: <input id="usernameField1" type="text" size="20"/></div>
+    <div id="password">Card: <input id="cardField1" type="password" size="20"/></div>
+    <br>
+    <button type="button" class="btn btn-primary btn-lg" id="addCard">Add Card</button>
+    <button type="button" class="btn btn-primary btn-lg" id="removeCard">Remove Card</button>
+    <button type="button" class="btn btn-primary btn-lg" id="getCards">Get Cards</button>
+
+
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
 
     <div id="lat">Latitude: <input id="latitude" type="text" size="20"/></div>
     <div id="long">Longitude: <input id="longitude" type="text" size="20"/></div>
     <div>Radius: <input id="radius" type="text" size="20"/></div>
     <div>Filter: <input id="filter" type="text" size="20"/></div>
+    <button type="button" class="btn btn-primary btn-lg" id="nearbyPlaces">Nearby Places</button>
+    
       <br>
-      <button type="button" class="btn btn-primary btn-lg" id="nearbyPlaces">Nearby Places</button>
-
-      <div id="lat1">Latitude: <input id="latitude1" type="text" size="20"/></div>
-    <div id="long1">Longitude: <input id="longitude1" type="text" size="20"/></div>
-    <div>Radius: <input id="radius1" type="text" size="20"/></div>
-    <div>Filter: <input id="filter1" type="text" size="20"/></div>
       <br>
-      <button type="button" class="btn btn-primary btn-lg" id="queryPlaces">Nearby Places</button>
+      <br>
+      <br>
+      <br>
 
-    </div>
+    <div id="lat1">Latitude1: <input id="latitude1" type="text" size="20"/></div>
+    <div id="long1">Longitude1: <input id="longitude1" type="text" size="20"/></div>
+    <div>Radius1: <input id="radius1" type="text" size="20"/></div>
+    <div>Filte1r: <input id="filter1" type="text" size="20"/></div>
+    <button type="button" class="btn btn-primary btn-lg" id="queryPlaces">Nearby Places1</button>
 
-      <!-- outputs status for success or failure -->
-      <div id="status"></div>
   </div>  <!-- end of container -->
 
   </body>

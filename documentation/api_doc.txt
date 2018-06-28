@@ -1,0 +1,37 @@
+
+1) GET "/login"
+Input: username, password
+Output: error - null if success, otherwise an error message
+
+2) POST "/signup"
+Input: username, password
+Output: error - null if success, otherwise an error message
+
+3) POST "/addCard"
+Input: username, card
+Output: error - null if success, otherwise an error message
+
+4) DELETE "/removeCard"
+Input: username, card
+Output: error - null if success, otherwise an error message
+
+5) GET "/getCards"
+Input: username
+Output: 
+	{
+		error: "" -> null if success, otherwise an error message
+		username: username
+		cards: ["CHASE_FREEDOM", "US_BANK_CASH_PLUS"]
+	}
+
+
+6) GET "/mapsSearchNearby"
+Input:	
+	{
+		location : "80.002,-40.013"
+		radius: 100
+		key: ieoafhfohsfoihsf
+		type: "restaurant"
+	}
+
+Output: Google API json output
