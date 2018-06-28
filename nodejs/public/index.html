@@ -67,6 +67,24 @@ $(document).ready(function() {
        },
     });
   });
+
+    // "Query Places" clicked
+    $("#queryPlaces").click(function() { 
+    $.ajax({
+      url: "/mapsQueryPlaces",
+      type: "GET", 
+      dataType : "text",
+      data : { lat: $("#latitude1").val(),
+               lng: $("#longitude1").val(),
+               radius: $("#radius1").val(),
+               filter: $("#filter1").val()
+             },
+      success: function(data) {  
+        console.log(data); 
+          $("#status").html(data); 
+       },
+    });
+  });
 });
 
 </script>
@@ -91,6 +109,13 @@ $(document).ready(function() {
     <div>Filter: <input id="filter" type="text" size="20"/></div>
       <br>
       <button type="button" class="btn btn-primary btn-lg" id="nearbyPlaces">Nearby Places</button>
+
+      <div id="lat1">Latitude: <input id="latitude1" type="text" size="20"/></div>
+    <div id="long1">Longitude: <input id="longitude1" type="text" size="20"/></div>
+    <div>Radius: <input id="radius1" type="text" size="20"/></div>
+    <div>Filter: <input id="filter1" type="text" size="20"/></div>
+      <br>
+      <button type="button" class="btn btn-primary btn-lg" id="queryPlaces">Nearby Places</button>
 
     </div>
 

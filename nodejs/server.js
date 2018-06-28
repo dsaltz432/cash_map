@@ -7,8 +7,11 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(express.static(__dirname + '/public'));
 
 // import custom js files
-let login = require('./login.js');
+var login = require('./login.js');
 let signup = require('./signup.js');
+var atm_locations = require('./mastercard/atm_locations');
+var merchants_category = require('./mastercard/example_merchants_category');
+var authenticate = require('./mastercard/authenticate');
 let google_api = require('./google_api.js');
 let credit_cards = require('./credit_cards.js');
 
@@ -20,6 +23,8 @@ let db = new sqlite3.Database("database.db");
 const log4js = require('log4js');
 log4js.configure("../config/log4js.json");
 const log = log4js.getLogger('test');
+
+
 
 db.serialize(function() {
 
@@ -51,28 +56,28 @@ db.serialize(function() {
 	});
 
 
-	// // Test MasterCard API
-	// app.get('/testMasterCardAPI', function (req, res) {
-	// 	console.log("Trying to test MasterCard API...");
-
-	// 	let directory = "../../../../../../Documents/secret_keys/";
-	// 	let file_name = "key_info.txt";
-
-	//   	let contents = fs.readFileSync(directory + file_name, 'utf8');
-	//   	let arr = contents.split("\n");
-
-	//   	// 1st: Consumer Key, 2nd: keyAlias, 3rd: keyPassword
-	// 	let consumerKey = arr[0].split(":")[1];
-	// 	let keyAlias = arr[1].split(":")[1];
-	// 	let keyPassword = arr[2].split(":")[1];
-	// 	let keyStorePath = directory + "cashmap_sandbox_key.p12";
+	// Test MasterCard API
+	app.get('/testMasterCardAPI', function (req, res) {
+		console.log("Trying to test MasterCard API...");
 
 
-	// 	authenticate.auth(consumerKey, keyStorePath, keyAlias, keyPassword);
-	// 	atm_locations.testAPI();
-	// 	merchants_category.testAPI();
+		var directory = "../../../../../../Documents/secret_keys/";
+		var file_name = "key_info.txt";
 
-	// });
+	  	var contents = fs.readFileSync(directory + file_name, 'utf8');
+	  	var arr = contents.split("\n");
+
+	  	// 1st: Consumer Key, 2nd: keyAlias, 3rd: keyPassword
+		var consumerKey = arr[0].split(":")[1];
+		var keyAlias = arr[1].split(":")[1];
+		var keyPassword = arr[2].split(":")[1];
+		var keyStorePath = directory + "cashmap_sandbox_key.p12";
+
+		authenticate.auth(consumerKey, keyStorePath, keyAlias, keyPassword);
+		atm_locations.testAPI();
+		merchants_category.testAPI();
+
+	});
 
 	app.get('/googleApiTest', function (req, res) {
 		console.log("Trying to call Google Test");
@@ -80,10 +85,25 @@ db.serialize(function() {
 		res.send(google_api.geoCodeTest());
 	});
 
+	app.get('/mapsSearchByCC', function(req, res) {
+		console.log("Google Maps Search by Credit Card");
+		//get return types from credit card inputs
+		let ccList = ["DISCOVER_IT_CASH_BACK", "AMERICAN_EXPRESS_BLUE_CASH_PREFERRED","BANK_OF_AMERICA_CASH_REWARDS"];
+		res.send(credit_cards.getTypesFromCards(ccList));
+
+		//run search on google maps
+		
+	});
+
+	app.get('/mapsSearchbyType', function(req, res) {
+		console.log("Google Maps Search by Type");
+	});
+
 	app.get('/mapsSearchNearby', function (req, res) {
 		console.log("Google Maps Search Nearby", req.query.lng, req.query.lat, req.query.radius);
 		google_api.searchNearby(req.query).then((response) => {
   			console.log(response);
+
   			for(let i = 0; i < response.json.results.length; i++){
   				console.log(response.json.results[i]);
   			}
@@ -97,6 +117,16 @@ db.serialize(function() {
 	  	});
 		
 	});
+
+	app.get('/mapsQueryPlaces', function (req, res) {
+		res.send(google_api.queryPlaces(req.query));
+	});
+
+	app.get('/getAllCC', function (req, res) {
+		res.send(credit_cards.getCurrentCreditCards());
+	});
+
+
 });
 
 
