@@ -1,25 +1,28 @@
-[2018-06-28T09:44:21.685] [INFO] test - Sign Up attempt, username: , password: 
-[2018-06-28T09:44:21.687] [INFO] test - Enter the required fields
-[2018-06-28T09:44:25.186] [INFO] test - Log In attempt, username: hello, password: hithere
-[2018-06-28T09:44:25.186] [INFO] test - SELECT * FROM users WHERE username = ? AND password = ?
-[2018-06-28T09:44:25.188] [INFO] test - Invalid credentials!
-[2018-06-28T09:45:03.186] [INFO] test - Sign Up attempt, username: , password: 
-[2018-06-28T09:45:03.186] [INFO] test - Enter the required fields
-[2018-06-28T09:45:07.219] [INFO] test - Sign Up attempt, username: helloohoih, password: hioeihfsiodhfs
-[2018-06-28T09:45:07.219] [INFO] test - SELECT * FROM users WHERE username = ?
-[2018-06-28T09:45:07.219] [INFO] test - INSERT INTO users VALUES (?,?) helloohoih, hioeihfsiodhfs
-[2018-06-28T09:45:07.223] [INFO] test - Created a new account!
-[2018-06-28T10:08:50.928] [INFO] test - Sign Up attempt, username: , password: 
-[2018-06-28T10:08:50.930] [INFO] test - Enter the required fields
-[2018-06-28T10:08:53.652] [INFO] test - Sign Up attempt, username: hsiodfhaiosdfh, password: hoisdhfiodshfsdfs
-[2018-06-28T10:08:53.652] [INFO] test - SELECT * FROM users WHERE username = ?
-[2018-06-28T10:08:53.654] [INFO] test - INSERT INTO users VALUES (?,?) hsiodfhaiosdfh, hoisdhfiodshfsdfs
-[2018-06-28T10:08:53.656] [INFO] test - Created a new account!
-[2018-06-28T10:10:10.022] [INFO] test - searchNearby:  Latitude:  80 Longitude:  -30 Filter:  
-[2018-06-28T10:10:10.024] [INFO] test - query:  { location: [ '80', '-30' ], radius: 1000 }
-[2018-06-28T10:10:10.207] [INFO] test - Found 0 results
-[2018-06-28T10:10:13.483] [INFO] test - searchNearby:  Latitude:  80 Longitude:  -30 Filter:  
-[2018-06-28T10:10:13.483] [INFO] test - query:  { location: [ '80', '-30' ], radius: 100000 }
-[2018-06-28T10:10:13.568] [INFO] test - Found 0 results
-[2018-06-28T10:10:34.111] [INFO] test - searchNearby:  Latitude:  40 Longitude:  -80 Filter:  
-[2018-06-28T10:10:34.111] [INFO] test - query:  { location: [ '40', '-80' ], radius: 100000 }
+[2018-06-28T11:51:46.619] [INFO] test - error: null
+[2018-06-28T11:51:48.906] [INFO] test - Getting cards for user jim
+[2018-06-28T11:51:48.906] [INFO] test - select card from credit_cards WHERE username = ? jim
+[2018-06-28T11:51:48.907] [INFO] test - { username: 'jim',
+  cards: [ 'BANK_OF_AMERICA_CASH_REWARDS' ],
+  error: null }
+[2018-06-28T11:56:32.704] [INFO] test - Getting cards for user 
+[2018-06-28T11:56:32.706] [INFO] test - select card from credit_cards WHERE username = ? 
+[2018-06-28T11:56:32.708] [INFO] test - { username: '', cards: [], error: 'No cards for that user' }
+[2018-06-28T11:56:34.941] [INFO] test - Getting cards for user hello
+[2018-06-28T11:56:34.941] [INFO] test - select card from credit_cards WHERE username = ? hello
+[2018-06-28T11:56:34.941] [INFO] test - { username: 'hello',
+  cards: [ 'CHASE', 'blank', 'hi' ],
+  error: null }
+[2018-06-28T11:56:41.901] [INFO] test - Sign Up attempt, username: hello, password: hellothere
+[2018-06-28T11:56:41.901] [INFO] test - SELECT * FROM users WHERE username = ?
+[2018-06-28T11:56:41.901] [INFO] test - That username is already taken!
+[2018-06-28T11:56:46.608] [INFO] test - Sign Up attempt, username: hi, password: hithere
+[2018-06-28T11:56:46.608] [INFO] test - SELECT * FROM users WHERE username = ?
+[2018-06-28T11:56:46.609] [INFO] test - INSERT INTO users VALUES (?,?) hi, hithere
+[2018-06-28T11:56:46.611] [INFO] test - Created a new account!
+[2018-06-28T11:56:55.044] [INFO] test - Removing Card, username: hi, card: DISCOVER_IT_CASH_BACK
+[2018-06-28T11:56:55.044] [INFO] test - SELECT * FROM credit_cards WHERE username = ? AND card = ?
+[2018-06-28T11:56:55.045] [INFO] test - error: The card DISCOVER_IT_CASH_BACK does not exist for user hi
+[2018-06-28T11:56:59.826] [INFO] test - Adding Card, username: hello, card: DISCOVER_IT_CASH_BACK
+[2018-06-28T11:56:59.826] [INFO] test - SELECT * FROM credit_cards WHERE username = ? AND card = ?
+[2018-06-28T11:56:59.826] [INFO] test - INSERT INTO credit_cards VALUES (?,?) hello, DISCOVER_IT_CASH_BACK
+[2018-06-28T11:56:59.828] [INFO] test - error: null

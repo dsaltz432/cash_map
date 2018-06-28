@@ -59,7 +59,6 @@ db.serialize(function() {
 		signup.signup(username, password, req, res);
 	});
 
-
 	// "Add Card" clicks
 	app.post('/addCard', function (req, res) {
 		let postBody = req.body;
@@ -69,7 +68,7 @@ db.serialize(function() {
 	});
 
 	// "Remove Card" clicks
-	app.post('/removeCard', function (req, res) {
+	app.delete('/removeCard', function (req, res) {
 		let postBody = req.body;
 		let username = postBody.username;
 		let card = postBody.card;
@@ -108,34 +107,51 @@ db.serialize(function() {
 	  	});
 	});
 
-	// Test MasterCard API
-	app.get('/testMasterCardAPI', function (req, res) {
-		console.log("Trying to test MasterCard API...");
-
-
-		var directory = "../../../../../../Documents/secret_keys/";
-		var file_name = "key_info.txt";
-
-	  	var contents = fs.readFileSync(directory + file_name, 'utf8');
-	  	var arr = contents.split("\n");
-
-	  	// 1st: Consumer Key, 2nd: keyAlias, 3rd: keyPassword
-		var consumerKey = arr[0].split(":")[1];
-		var keyAlias = arr[1].split(":")[1];
-		var keyPassword = arr[2].split(":")[1];
-		var keyStorePath = directory + "cashmap_sandbox_key.p12";
-
-		authenticate.auth(consumerKey, keyStorePath, keyAlias, keyPassword);
-		atm_locations.testAPI();
-		merchants_category.testAPI();
-
+	app.get('/mapsSearchNearby', function (req, res) {
+		console.log("Google Maps Search Nearby", req.query);
+		if (req.query.pagetoken) {
+			delete req.query.location;
+		}
+		req.query.radius = +req.query.radius;
+		google_api.searchNearby(req.query)
+			.then(results => {
+				console.log(results.json);
+				res.send(results.json);
+		})
+			.catch(err => {
+				console.error(err);
+				throw new Error(err);
+			});
 	});
 
-	app.get('/googleApiTest', function (req, res) {
-		console.log("Trying to call Google Test");
+	// // Test MasterCard API
+	// app.get('/testMasterCardAPI', function (req, res) {
+	// 	console.log("Trying to test MasterCard API...");
 
-		res.send(google_api.geoCodeTest());
-	});
+
+	// 	var directory = "../../../../../../Documents/secret_keys/";
+	// 	var file_name = "key_info.txt";
+
+	//   	var contents = fs.readFileSync(directory + file_name, 'utf8');
+	//   	var arr = contents.split("\n");
+
+	//   	// 1st: Consumer Key, 2nd: keyAlias, 3rd: keyPassword
+	// 	var consumerKey = arr[0].split(":")[1];
+	// 	var keyAlias = arr[1].split(":")[1];
+	// 	var keyPassword = arr[2].split(":")[1];
+	// 	var keyStorePath = directory + "cashmap_sandbox_key.p12";
+
+	// 	authenticate.auth(consumerKey, keyStorePath, keyAlias, keyPassword);
+	// 	atm_locations.testAPI();
+	// 	merchants_category.testAPI();
+
+	// });
+
+	// app.get('/googleApiTest', function (req, res) {
+	// 	console.log("Trying to call Google Test");
+
+	// 	res.send(google_api.geoCodeTest());
+	// });
 
 	app.get('/mapsSearchByCC', function(req, res) {
 		console.log("Google Maps Search by Credit Card");
@@ -154,34 +170,18 @@ db.serialize(function() {
 			.catch(err => {throw new Error(err)});
 	});
 
-	app.get('/mapsSearchbyType', function(req, res) {
-		console.log("Google Maps Search by Type");
-	});
+	// app.get('/mapsSearchbyType', function(req, res) {
+	// 	console.log("Google Maps Search by Type");
+	// });
 
-	app.get('/mapsSearchNearby', function (req, res) {
-		console.log("Google Maps Search Nearby", req.query);
-		if (req.query.pagetoken) {
-			delete req.query.location;
-		}
-		req.query.radius = +req.query.radius;
-		google_api.searchNearby(req.query)
-			.then(results => {
-				console.log(results.json);
-				res.send(results.json);
-		})
-			.catch(err => {
-				console.error(err);
-				throw new Error(err);
-			});
-	});
 
-	app.get('/mapsQueryPlaces', function (req, res) {
-		res.send(google_api.queryPlaces(req.query));
-	});
+	// app.get('/mapsQueryPlaces', function (req, res) {
+	// 	res.send(google_api.queryPlaces(req.query));
+	// });
 
-	app.get('/getAllCC', function (req, res) {
-		res.send(credit_cards.getCurrentCreditCards());
-	});
+	// app.get('/getAllCC', function (req, res) {
+	// 	res.send(credit_cards.getCurrentCreditCards());
+	// });
 
 
 });
