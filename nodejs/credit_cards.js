@@ -7,14 +7,15 @@ const log4js = require('log4js');
 log4js.configure("../config/log4js.json");
 const log = log4js.getLogger('test');
 
-let allCreditCards = {
-				"AMERICAN_EXPRESS": {
-					"restaurant": 3, "health": 2, "pharmacy: ": 1, "gym: ": 1
-				}, 
-				"CHASE_FREEDOM": {
-					"restaurant": 1, "health": 5, "pharmacy: ": 1, "gym: ": 2
-				}
-			};
+var categories = ["restaurant","gas_station","pharmacy","supermarket","department_store",
+					"lodging","clothing_store","electronics_store","car_rental","gym",
+					"furniture_store","movie_theater","amusement_park","aquarium","bar",
+					"beauty_salon","bicycle_store","bowling_alley","cafe","car_dealer",
+					"car_repair","car_wash","florist","hair_care","hardware_store",
+					"home_goods_store","jewelry_store","laundry","liquor_store","locksmith",
+					"meal_delivery","movie_rental","moving_company","night_club","parking",
+					"pet_store","plumber","shoe_store","shopping_mall","spa","stadium",
+					"store","zoo"];
 
 var allCreditCardsQ3 = {
 	"DISCOVER_IT_CASH_BACK": {
@@ -47,31 +48,31 @@ var allCreditCardsQ3 = {
 };
 
 module.exports = {
-	getCreditCards: function() {
-		return allCreditCards;
-	},
+	// getCreditCards: function() {
+	// 	return allCreditCards;
+	// },
 
-	getCurrentCreditCards: function() {
-		return allCreditCardsQ3;
-	},
+	// getCurrentCreditCards: function() {
+	// 	return allCreditCardsQ3;
+	// },
 
-	getUniqueTypesFromCards: function(cards) {
-		let allTypes = [];
-		for(let i = 0; i < cards.length; ++i){
-			console.log(allCreditCardsQ3[cards[i]]);
-			let types = Array.from(Object.keys(allCreditCardsQ3[cards[i]]));
-			allTypes = allTypes.concat(types);
-		}
+	// getUniqueTypesFromCards: function(cards) {
+	// 	let allTypes = [];
+	// 	for(let i = 0; i < cards.length; ++i){
+	// 		console.log(allCreditCardsQ3[cards[i]]);
+	// 		let types = Array.from(Object.keys(allCreditCardsQ3[cards[i]]));
+	// 		allTypes = allTypes.concat(types);
+	// 	}
 
-		let uniqueTypes = {};
-		allTypes.forEach( function(v) {
-			uniqueTypes[v] = v;
-		});
+	// 	let uniqueTypes = {};
+	// 	allTypes.forEach( function(v) {
+	// 		uniqueTypes[v] = v;
+	// 	});
 
-		allTypes = Object.keys(uniqueTypes);
+	// 	allTypes = Object.keys(uniqueTypes);
 
-		return allTypes;
-	},
+	// 	return allTypes;
+	// },
 
 	addCard: function(username, card, req, res) {
 
@@ -181,26 +182,26 @@ module.exports = {
 		  });
 	},
 
-	getCashBack: function(places) {
-		for(let i = 0; i < places.length; i++){
-			places[i].cash_back = null;
-			places[i].recommended_card = "";
-			for(let j = 0; j < places[i].types.length; j++){
-				if(allCreditCards["AMERICAN_EXPRESS"][places[i].types[j]] || allCreditCards["CHASE_FREEDOM"][places[i].types[j]]){
-					if(allCreditCards["AMERICAN_EXPRESS"][places[i].types[j]] > allCreditCards["CHASE_FREEDOM"][places[i].types[j]]){
-						places[i].cash_back = allCreditCards["AMERICAN_EXPRESS"][places[i].types[j]];
-						places[i].recommended_card = "AMERICAN_EXPRESS";
-					}
-					else {
-						places[i].cash_back = allCreditCards["CHASE_FREEDOM"][places[i].types[j]];
-						places[i].recommended_card = "CHASE_FREEDOM";
-					}
-				}
-			}
-		}
+	// getCashBack: function(places) {
+	// 	for(let i = 0; i < places.length; i++){
+	// 		places[i].cash_back = null;
+	// 		places[i].recommended_card = "";
+	// 		for(let j = 0; j < places[i].types.length; j++){
+	// 			if(allCreditCards["AMERICAN_EXPRESS"][places[i].types[j]] || allCreditCards["CHASE_FREEDOM"][places[i].types[j]]){
+	// 				if(allCreditCards["AMERICAN_EXPRESS"][places[i].types[j]] > allCreditCards["CHASE_FREEDOM"][places[i].types[j]]){
+	// 					places[i].cash_back = allCreditCards["AMERICAN_EXPRESS"][places[i].types[j]];
+	// 					places[i].recommended_card = "AMERICAN_EXPRESS";
+	// 				}
+	// 				else {
+	// 					places[i].cash_back = allCreditCards["CHASE_FREEDOM"][places[i].types[j]];
+	// 					places[i].recommended_card = "CHASE_FREEDOM";
+	// 				}
+	// 			}
+	// 		}
+	// 	}
 
-		log.info("Found " + places.length + " results");
-		return places;
-	}
+	// 	log.info("Found " + places.length + " results");
+	// 	return places;
+	// }
 
 };

@@ -34,4 +34,4 @@ Input:
 		type: "restaurant"
 	}
 
-Output: Google API json output
+Output: at most 20 results of Google API json 

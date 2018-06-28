@@ -25,7 +25,6 @@ log4js.configure("../config/log4js.json");
 const log = log4js.getLogger('test');
 
 
-
 db.serialize(function() {
 
 /***********************************************
@@ -41,7 +40,7 @@ db.serialize(function() {
 
 
 /***********************************************
-	Handling requests from index.html
+	Handling REST API Requests
 ************************************************/
 
 	// "Log In" clicks
@@ -153,22 +152,22 @@ db.serialize(function() {
 	// 	res.send(google_api.geoCodeTest());
 	// });
 
-	app.get('/mapsSearchByCC', function(req, res) {
-		console.log("Google Maps Search by Credit Card");
-		console.log(req.query);
+	// app.get('/mapsSearchByCC', function(req, res) {
+	// 	console.log("Google Maps Search by Credit Card");
+	// 	console.log(req.query);
 
-		const { location, radius, ccList } = req.query;
-		// // uncomment below (and comment the line above) to test hardcoded query 
-		// const ccList = ['DISCOVER_IT_CASH_BACK'];
-		// const location = '37.33025622,-122.02763446';
-		// const radius = 388.96666666666664;
+	// 	const { location, radius, ccList } = req.query;
+	// 	// // uncomment below (and comment the line above) to test hardcoded query 
+	// 	// const ccList = ['DISCOVER_IT_CASH_BACK'];
+	// 	// const location = '37.33025622,-122.02763446';
+	// 	// const radius = 388.96666666666664;
 
-		const typesArray = creditCards.getUniqueTypesFromCards(ccList);
+	// 	const typesArray = creditCards.getUniqueTypesFromCards(ccList);
 
-		google_api.searchNearbyMultipleTypes({location, radius, typesArray})
-			.then(results => res.send(results))
-			.catch(err => {throw new Error(err)});
-	});
+	// 	google_api.searchNearbyMultipleTypes({location, radius, typesArray})
+	// 		.then(results => res.send(results))
+	// 		.catch(err => {throw new Error(err)});
+	// });
 
 	// app.get('/mapsSearchbyType', function(req, res) {
 	// 	console.log("Google Maps Search by Type");
