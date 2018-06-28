@@ -8,11 +8,11 @@ app.use(express.static(__dirname + '/public'));
 
 // import my own js files
 var login = require('./login.js');
-var atm_locations = require('./atm_locations');
-var merchants_category = require('./example_merchants_category');
-var authenticate = require('./authenticate');
-var googleApi = require('./googleApi.js');
-var creditCards = require('./creditCards.js');
+var atm_locations = require('./mastercard/atm_locations');
+var merchants_category = require('./mastercard/example_merchants_category');
+var authenticate = require('./mastercard/authenticate');
+var googleApi = require('./google_api.js');
+var creditCards = require('./credit_cards.js');
 
 // importing sqlite and creating the database
 var sqlite3 = require("sqlite3").verbose();
@@ -111,13 +111,27 @@ db.serialize(function() {
 		res.send(googleApi.geoCodeTest());
 	});
 
+	app.get('/mapsSearchByCC', function(req, res) {
+		console.log("Google Maps Search by Credit Card");
+		//get return types from credit card inputs
+		let ccList = ["DISCOVER_IT_CASH_BACK", "AMERICAN_EXPRESS_BLUE_CASH_PREFERRED","BANK_OF_AMERICA_CASH_REWARDS"];
+		res.send(creditCards.getTypesFromCards(ccList));
+
+		//run search on google maps
+		
+	});
+
+	app.get('/mapsSearchbyType', function(req, res) {
+		console.log("Google Maps Search by Type");
+	});
+
 	app.get('/mapsSearchNearby', function (req, res) {
 		console.log("Google Maps Search Nearby", req.query.lng, req.query.lat, req.query.radius);
 		googleApi.searchNearby(req.query).then((response) => {
   			console.log(response);
 
   			let allResults = [];
-  			allResults.concat(response.json.results);
+  			allResults = allResults.concat(response.json.results);
 
   			//req.query.pagetoken = response.json.next_page_token;
   			
@@ -162,7 +176,9 @@ db.serialize(function() {
 
 	app.get('/getAllCC', function (req, res) {
 		res.send(creditCards.getCurrentCreditCards());
-	})
+	});
+
+
 });
 
 

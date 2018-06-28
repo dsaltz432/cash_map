@@ -46,6 +46,24 @@ module.exports = {
 		return allCreditCardsQ3;
 	},
 
+	getTypesFromCards: function(cards) {
+		let allTypes = [];
+		for(let i = 0; i < cards.length; ++i){
+			console.log(allCreditCardsQ3[cards[i]]);
+			let types = Array.from(Object.keys(allCreditCardsQ3[cards[i]]));
+			allTypes = allTypes.concat(types);
+		}
+
+		let uniqueTypes = {};
+		allTypes.forEach( function(v) {
+			uniqueTypes[v] = v;
+		});
+
+		allTypes = Object.keys(uniqueTypes);
+
+		return allTypes;
+	},
+
 	getCashBack: function(places) {
 		console.log("Getting Cash Back");
 		for(let i = 0; i < places.length; i++){
